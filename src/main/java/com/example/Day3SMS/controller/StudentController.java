@@ -1,13 +1,20 @@
 package com.example.Day3SMS.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.Day3SMS.model.StudentModel;
+import com.example.Day3SMS.service.StudentService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class StudentController {
-    @GetMapping("/")
-    public String student(){
-        return "Home Page for Student";
+   private final StudentService service;
+
+    public StudentController(StudentService service) {
+        this.service = service;
     }
 
+    // Create API
+    @PostMapping("/add-student")
+    public StudentModel addStudent(@RequestBody StudentModel student){
+        return service.addStudent(student);
+    }
 }
