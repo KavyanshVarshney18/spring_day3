@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="app">
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">◈</span>
+            <h1>Student Management</h1>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-icon">👥</span>
+                <span class="stat-value" id="totalCount">0</span>
+                <span class="stat-label">Total Students</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🔍</span>
+                <span class="stat-value" id="filteredCount">0</span>
+                <span class="stat-label">Filtered</span>
+            </div>
+        </div>
+
+        <!-- Add Student Form -->
+        <section class="card form-section">
+            <h2 class="section-title">Add New Student</h2>
+            <form class="add-form" id="addForm" onsubmit="addStudent(event)">
+                <div class="form-row">
+                    <input type="text" id="name" placeholder="Full Name" required>
+                    <input type="number" id="age" placeholder="Age (5-90)" min="5" max="90" required>
+                    <input type="email" id="email" placeholder="Email Address" required>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="btn-icon">+</span> Add Student
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Search, Sort & Filter Bar -->
+        <section class="card toolbar-section">
+            <div class="toolbar">
+                <div class="search-box">
+                    <span class="search-icon">⌕</span>
+                    <input type="text" id="searchInput" placeholder="Search by name or email..." oninput="handleSearch()">
+                </div>
+                <div class="toolbar-group">
+                    <select id="sortSelect" onchange="applySortFilter()">
+                        <option value="">Sort by...</option>
+                        <option value="name-asc">Name A–Z</option>
+                        <option value="name-desc">Name Z–A</option>
+                        <option value="age-asc">Age Low–High</option>
+                        <option value="age-desc">Age High–Low</option>
+                        <option value="email-asc">Email A–Z</option>
+                    </select>
+                    <select id="ageFilter" onchange="applySortFilter()">
+                        <option value="">All Ages</option>
+                        <option value="5-17">5-17 (Minors)</option>
+                        <option value="18-25">18-25 (Young Adults)</option>
+                        <option value="26-45">26-45 (Adults)</option>
+                        <option value="46-90">46-90 (Senior)</option>
+                    </select>
+                    <button class="btn btn-ghost" onclick="loadStudents()" title="Refresh">
+                        <span class="btn-icon">↻</span> Refresh
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Student Table -->
+        <section class="card table-section">
+            <div class="table-header">
+                <h2 class="section-title">Students</h2>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th class="actions-col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTable"></tbody>
+                </table>
+            </div>
+            <div class="empty-state" id="emptyState">
+                <span class="empty-icon">📚</span>
+                <p>No students yet. Add your first student above!</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast" class="toast"></div>
+</div>
+
+<script src="/js/student.js"></script>
+</body>
+</html>

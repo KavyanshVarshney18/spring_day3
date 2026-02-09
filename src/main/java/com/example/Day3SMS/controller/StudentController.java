@@ -26,8 +26,10 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<StudentResponseDto> getStudents() {
-        return service.getAllStudents();
+    public List<StudentResponseDto> getStudents(@RequestParam(required = false) String search) {
+        return search != null && !search.isBlank()
+                ? service.searchStudents(search)
+                : service.getAllStudents();
     }
 
     @PutMapping("/{id}")
@@ -37,6 +39,15 @@ public class StudentController {
     ) {
         return service.updateStudent(id, dto);
     }
+
+    @PatchMapping("/{id}")
+    public StudentResponseDto patchStudent(
+            @PathVariable String id,
+            @RequestBody StudentRequestDto dto
+    ) {
+        return service.patchStudent(id, dto);
+    }
+
 
 
     @DeleteMapping("/{id}")

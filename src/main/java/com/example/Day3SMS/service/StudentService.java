@@ -35,6 +35,16 @@ public class StudentService {
                 .toList();
     }
 
+    public List<StudentResponseDto> searchStudents(String query) {
+        if (query == null || query.isBlank()) {
+            return getAllStudents();
+        }
+        return repository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(query, query)
+                .stream()
+                .map(this::map)
+                .toList();
+    }
+
     public StudentResponseDto updateStudent(String id, StudentRequestDto dto) {
 
         StudentModel student = repository.findById(id)
@@ -64,4 +74,27 @@ public class StudentService {
                 s.getEmail()
         );
     }
+
+    public StudentResponseDto patchStudent(String id, StudentRequestDto dto) {
+
+        StudentModel student = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        // Update ONLY fields that are NOT null
+        if (dto.getName() != null && !dto.getName().isBlank()) {
+            student.setName(dto.getName());
+        }
+
+        if (dto.getAge() > 0) {
+            student.setAge(dto.getAge());
+        }
+
+        if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
+            student.setEmail(dto.getEmail());
+        }
+
+        StudentModel updated = repository.save(student);
+        return map(updated);
+    }
+
 }
